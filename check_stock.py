@@ -21,7 +21,7 @@ MEN_FILTER_XPATH = "//label[contains(text(), 'Men (')]"
 
 
 def send_telegram_alert(count):
-    """Sends a formatted message to the Telegram channel with full error logging."""
+    """Sends a formatted message to the Telegram channel."""
     
     if not BOT_TOKEN or not CHAT_ID:
         print("[TELEGRAM] ERROR: TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID secrets not set.")
@@ -49,20 +49,16 @@ def send_telegram_alert(count):
     
     try:
         response = requests.post(api_url, json=payload)
-        
-        # --- NEW DEBUGGING LOGIC ---
-        if response.ok:
-            print(f"[TELEGRAM] Successfully sent alert (Status {response.status_code}).")
-        else:
-            # This will print the exact error from Telegram
-            print(f"[TELEGRAM] FAILED to send alert (Status {response.status_code}).")
-            print(f"API Response: {response.json()}")
-        # ---------------------------
-
         response.raise_for_status() # Raise an exception for bad status codes
+        print(f"[TELEGRAM] Successfully sent alert (Status {response.status_code}).")
         
     except Exception as e:
-        print(f"[TELEGRAM] An exception occurred during request: {e}")
+        print(f"[TELEGRAM] FAILED to send alert: {e}")
+        # Try to print the API response if it exists
+        try:
+            print(f"API Response: {response.json()}")
+        except:
+            pass
 
 
 def check_stock():
@@ -71,7 +67,6 @@ def check_stock():
     and sends a Telegram alert if it's 100+.
     """
     
-    # --- THIS IS THE CRITICAL FIX ---
     # Set up the options for the GitHub Actions Linux runner
     options = Options()
     options.add_argument("--headless")
@@ -81,7 +76,6 @@ def check_stock():
     options.add_argument("--window-size=1920,1080")
     options.add_argument('--remote-debugging-port=9222')
     options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36")
-    # ---------------------------------
     
     driver = None
     try:
@@ -102,27 +96,18 @@ def check_stock():
             
             print(f"[{time.ctime()}] SUCCESS: Found Men's stock count: {stock_count}")
             
-            # --- MODIFICATION FOR TESTING ---
-            # This will force the alert to send every time.
-            
-            print("\n" + "!"*20)
-            print(f"TESTING: Forcing Telegram alert with count: {stock_count}")
-            print("!"*20 + "\n")
-            
-            # --- Send the alert! ---
-            send_telegram_alert(stock_count) 
-            
-            # --- END OF MODIFICATION ---
-            
-            # --- !!! REMEMBER TO CHANGE IT BACK TO THIS !!! ---
-            # if stock_count >= 100:
-            #     print("\n" + "!"*20)
-            #     print(f"ALERT! STOCK IS 100+ ! Current count: {stock_count}")
-            #     print("!"*20 + "\n")
-            #     send_telegram_alert(stock_count) 
-            # else:
-            #     print(f"[{time.ctime()}] Stock ({stock_count}) is below 100. No alert.")
-            # ----------------------------------------------------
+            # --- THIS IS THE NORMAL LOGIC ---
+            if stock_count >= 100:
+                print("\n" + "!"*20)
+                print(f"ALERT! STOCK IS 100+ ! Current count: {stock_count}")
+                print("!"*20 + "\n")
+                
+                # --- Send the alert! ---
+                send_telegram_alert(stock_count) 
+                
+            else:
+                print(f"[{time.ctime()}] Stock ({stock_count}) is below 100. No alert.")
+            # ---------------------------------
 
         else:
             print(f"[{time.ctime()}] ERROR: Could not parse stock count from text: '{label_text}'")
