@@ -23,7 +23,7 @@ MEN_FILTER_XPATH = "//label[contains(text(), 'Men (')]"
 def send_telegram_alert(count):
     """Sends a formatted message to the Telegram channel with full error logging."""
     
-    if not BOT_TOKEN or not CH_ID:
+    if not BOT_TOKEN or not CHAT_ID:
         print("[TELEGRAM] ERROR: TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID secrets not set.")
         return
 
