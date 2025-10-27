@@ -97,7 +97,7 @@ def check_stock():
             print(f"[{time.ctime()}] SUCCESS: Found Men's stock count: {stock_count}")
             
             # --- THIS IS THE NORMAL LOGIC ---
-            if stock_count >= 100:
+            if stock_count >= 50:
                 print("\n" + "!"*20)
                 print(f"ALERT! STOCK IS 100+ ! Current count: {stock_count}")
                 print("!"*20 + "\n")
