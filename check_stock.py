@@ -99,7 +99,7 @@ def check_stock():
             # --- THIS IS THE NORMAL LOGIC ---
             if stock_count >= 50:
                 print("\n" + "!"*20)
-                print(f"ALERT! STOCK IS 100+ ! Current count: {stock_count}")
+                print(f"ALERT! STOCK IS 50+ ! Current count: {stock_count}")
                 print("!"*20 + "\n")
                 
                 # --- Send the alert! ---
