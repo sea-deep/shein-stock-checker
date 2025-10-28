@@ -34,7 +34,7 @@ def send_telegram_alert(count):
     # Note: Telegram MarkdownV2 requires escaping characters like . ( ) - !
     message_text = (
         f"🚨 *SHEIN STOCK ALERT* 🚨\n\n"
-        f"Men's stock is over 100\\!\n\n"
+        f"Men's stock is over 10\\!\n\n"
         f"Current Count: **{count_formatted}**\n\n"
         f"[Click here to check the page]({URL})"
     )
@@ -106,7 +106,7 @@ def check_stock():
                 send_telegram_alert(stock_count) 
                 
             else:
-                print(f"[{time.ctime()}] Stock ({stock_count}) is below 100. No alert.")
+                print(f"[{time.ctime()}] Stock ({stock_count}) is below 10. No alert.")
             # ---------------------------------
 
         else:
