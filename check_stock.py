@@ -33,10 +33,9 @@ def send_telegram_alert(count):
     # Create the message text using MarkdownV2 formatting
     # Note: Telegram MarkdownV2 requires escaping characters like . ( ) - !
     message_text = (
-        f"🚨 *SHEIN STOCK ALERT* 🚨\n\n"
-        f"Men's stock is over 10\\!\n\n"
-        f"Current Count: **{count_formatted}**\n\n"
-        f"[Click here to check the page]({URL})"
+        f"🚨 *SHEIN STOCK ALERT* 🚨\n"
+        f"Men's stock is {count_formatted}\\!\n"
+        f"{URL}"
     )
     
     # Define the Telegram API URL and payload

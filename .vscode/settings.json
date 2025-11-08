@@ -1,0 +1,4 @@
+{
+  "python.defaultInterpreterPath": "/home/deepak/code/shein/venv/bin/python",
+  "python.analysis.typeCheckingMode": "off"
+}
